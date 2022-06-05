@@ -9,6 +9,7 @@
 # 4) row-wise conditional entropy, 
 # for example 
 # x <- table(adolescents_data_f$Q1, adolescents_data_f$Q2)
+
 conditional_entropy <- function(x) {
   # H(Y|X=x)
   h_i <- numeric(nrow(x))
