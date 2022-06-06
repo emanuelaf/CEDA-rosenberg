@@ -90,8 +90,14 @@ ci(x1, entropy_measure="rowwise_ce")
 require(ggplot2)
 require(rlang)
 
-# takes two vectors
-# returns a factor ordered to see interactions
+# takes two vectors and a parameter to explain
+# the type of reordering (if for visualizing interactions or not):
+# 1) independent variable 1
+# 2) independent variable 2
+# 3) interaction: logical, T if re-ordering for displaying interaction is seeked
+# returns:
+# 1) a character vector containing the re-ordered levels
+
 sort_interaction <- function(x1, x2, interaction = F) {
   if (interaction == T) {
     x1x2 <- paste(x1, x2, sep = "_")
