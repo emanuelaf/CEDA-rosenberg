@@ -84,3 +84,45 @@ ci <- function(x, M=1000, entropy_measure="ce_rescaled", conf_level = 0.95) {
 
 ci(x1, entropy_measure="rowwise_ce")
 
+#######################################
+#### Builds ordering for displaying 
+#### entropy given two predictors 
+require(ggplot2)
+require(rlang)
+
+# takes two vectors
+# returns a factor ordered to see interactions
+sort_interaction <- function(x1, x2, interaction = F) {
+  if (interaction == T) {
+    x1x2 <- paste(x1, x2, sep = "_")
+    levels_for_interaction <- levels(factor(x1x2))
+    return(levels_for_interaction)
+    } else {
+    total <- x1 + x2
+    ordered_x1_x2 <- data.frame(total = total,
+                              x1x2 = factor(x1x2),
+                              x1 = x1, x2 = x2)
+    partial_order <- unique(ordered_x1_x2)[order(unique(ordered_x1_x2)$total,
+                              unique(ordered_x1_x2)$x1,
+                              unique(ordered_x1_x2)$x2,
+                              decreasing = F),]$x1x2
+    ordered_x1_x2$x1x2 <- factor(ordered_x1_x2$x1x2,
+                               levels = partial_order)
+    levels_no_interaction <- levels(ordered_x1_x2$x1x2)
+    return(levels_no_interaction)
+  }
+}
+
+sort_interaction(x1, x2, T)
+
+#interaction_plots <- function(df, x, y, levels, ...) {
+#  return(ggplot(data = df)+
+#           geom_point(
+#             aes(x=factor({{ x }}, levels = levels), 
+#                 y = {{ y }}, ...)))
+# }
+
+#interaction_plots(df_conditional_entropies_order2_rowwise, 
+#                  x = category, y = value, 
+#                  col = sign,
+#                  sort_interaction(x1, x2, T)) 
