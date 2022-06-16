@@ -13,7 +13,7 @@ rosemberg_data_f_us <-
 # Q1|....
 
 questions <- c('Q1','Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10')
-response <- 'Q9'
+response <- 'Q1'
 response_number <- which(questions == response)
 independent <- questions[!(questions %in% response)]
 independent_number <- which(questions %in% independent)
@@ -127,14 +127,18 @@ for (q in independent_number) {
 }
 
 require(ggplot2)
+pos_questions <- c('Q1', 'Q2', 'Q4', 'Q6', 'Q7')
+rowwise_ce_final$sign <- ifelse(rowwise_ce_final$variable %in% pos_questions,
+                                'positive', 'negative')
 ggplot(data = 
          rowwise_ce_final[rowwise_ce_final$age_group == 'Age 15-18',])+
     geom_point(aes(x=category, y = CE, group = age_group, col=sex))+
   geom_errorbar(aes(x = category, ymin=ci_l, ymax=ci_u, col = sex), 
                 width=.1) +
   facet_wrap(vars(factor(variable, levels = independent)), ncol = 3)+
-    labs(#y=paste0('H(', response, '|Qq=i)'), 
-         y = paste0('H(', response, '|Qq=i)'),
+  geom_rect(aes(fill = sign, linetype = sign), xmin = -Inf,xmax = Inf,
+            ymin = -Inf,ymax = Inf, alpha = 0.03, show.legend = F) +
+    labs(y = paste0('H(', response, '|Qq=i)'),
          x = paste('Category')) +
     scale_color_discrete(name = "Sex", h = c(30, 140)) +
   theme_bw()
