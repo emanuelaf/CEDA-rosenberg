@@ -69,7 +69,7 @@ ci <- function(x, M=1000, entropy_measure="ce_rescaled", conf_level = 0.95) {
       (entropy_measure=="ce_rescaled")*conditional_entropy(list_mimicked_matrix[[r]])[[1]]+
       (entropy_measure=="ce")*conditional_entropy(list_mimicked_matrix[[r]])[[2]]+
       (entropy_measure=="marginal_entropy")*conditional_entropy(list_mimicked_matrix[[r]])[[3]]
-    ce_distribution_rows[,r]  <- (entropy_measure=="rowwise_ce")*conditional_entropy(list_mimicked_matrix[[r]])[[4]]
+    ce_distribution_rows[,r]  <- (entropy_measure=="rowwise_ce")*conditional_entropy(list_mimicked_matrix[[r]])[[4]]/conditional_entropy(list_mimicked_matrix[[r]])[[3]]
   }
   if (entropy_measure != "rowwise_ce") {
     ci_l <- quantile(ce_distribution, prob = (1-conf_level)/2)
@@ -82,7 +82,7 @@ ci <- function(x, M=1000, entropy_measure="ce_rescaled", conf_level = 0.95) {
   }
 }
 
-ci(x1, entropy_measure="rowwise_ce")
+#ci(x1, entropy_measure="rowwise_ce")
 
 #######################################
 #### Builds ordering for displaying 
@@ -119,7 +119,7 @@ sort_interaction <- function(x1, x2, interaction = F) {
   }
 }
 
-sort_interaction(x1, x2, T)
+#sort_interaction(x1, x2, T)
 
 #interaction_plots <- function(df, x, y, levels, ...) {
 #  return(ggplot(data = df)+
