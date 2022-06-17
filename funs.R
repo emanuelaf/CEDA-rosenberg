@@ -99,8 +99,8 @@ require(rlang)
 # 1) a character vector containing the re-ordered levels
 
 sort_interaction <- function(x1, x2, interaction = F) {
+  x1x2 <- paste(x1, x2, sep = "_")
   if (interaction == T) {
-    x1x2 <- paste(x1, x2, sep = "_")
     levels_for_interaction <- levels(factor(x1x2))
     return(levels_for_interaction)
     } else {
